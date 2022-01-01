@@ -1,0 +1,158 @@
+
+<DOCTYPE html>
+<html>
+ <head>
+    <title>MemeLAB</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+<body>
+    
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Memelab</a>
+          </div>
+      
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+            </ul>
+            <form class="navbar-form navbar-right">
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">GitHub</a></li>   
+              <!-- <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </li> -->
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+
+
+
+    <div class="content">
+
+        <div class="container">
+
+            <!-- Select Meme -->
+
+            <div class="row">
+
+                <div class="col-md-8 col-md-offset-2">
+
+                    <h3> 1) Search for a meme (Imgflip)</h3>
+                    <input type="text" id="search" class="form-control" placeholder="Search for a meme">
+                    <ul class="select-meme list-group list-group-horizontal-sm">
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-8 col-md-offset-2">
+
+                    <h3> Or... Upload your image </h3>
+                    <input type="file" id="file" class="form-control" placeholder="Upload your image">
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h3> 2) Edit your meme </h3>
+                    
+                    <!-- <form id="create-meme">
+                        <div class="form-group">
+                            <label for="meme-name">Name</label>
+                            <input type="text" id="template_id" name="template_id">
+                            <input type="text" name="name" class="form-control" id="meme-name" placeholder="Name">
+                            <label for="text0">Upper Text</label>
+                            <input type="text" class="form-control" id="text0 placeholder=" Upper Text">
+                            <div class="selected-meme">
+                                <img src="" class="img-fluid" alt="selected meme" style="max-width:100%;
+                                    max-height:100%;">
+                            </div>
+                            <label for="text1">Lower Text</label>
+                            <input type="text" class="form-control" id="text1 placeholder=" Lower Text">
+                            <input type="submit" class="btn btn-primary" value="Create Meme">
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('#search').addEventListener('keyup', function (e) {
+            var search = e.target.value;
+            console.log(search)
+            var list = document.querySelector('.select-meme')
+            list.innerHTML = '';
+            fetch('https://api.imgflip.com/get_memes')
+                .then(res => res.json())
+                .then(memes => {
+                    console.log(memes);
+                    var list = document.querySelector('.select-meme')
+                    memes.data.memes.filter(element => element.name.includes(search)).slice(0, 5).forEach(meme => {
+                        var listItem = document.createElement('li')
+                        var m = document.createElement('img');
+                        m.src = meme.url
+                            m.classList.add('img-fluid')
+                            m.classList.add('meme')
+                        listItem.appendChild(m)
+                        listItem.addEventListener('click', function () {
+                            var img = document.querySelector('.selected-meme img')
+                            img.classList.add('img-fluid')
+                            img.classList.add('fit-image')
+
+                            img.src = meme.url
+                        })
+                        list.appendChild(listItem);
+                    });
+                })
+        })
+    })
+
+
+    document.querySelector('#create-meme').addEventListener('submit', async function (e) {
+
+        console.log("hola..")
+        const data = new FormData(event.target);
+
+        const value = Object.fromEntries(data.entries());
+
+        console.log(value)
+
+        //     await fetch('https://api.imgflip.com/caption_image', {
+        //         method: 'POST',
+        //         data: JSON.stringify(value)    
+        //     })
+
+    })
+
+</script>
+
+</html>
+
