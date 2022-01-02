@@ -1,18 +1,12 @@
 <script>
     import { user } from './userStore.js'; 
-    import { Form, FormGroup, FormText, Input, Label, Button} from 'sveltestrap';
-  
+    import { Figure, Image  } from 'sveltestrap';
 
     let myUser;
     
     user.subscribe(val => {
         myUser = val;
-        console.log("Value user; ", val);
-        console.log(myUser);
     });
-
-    console.log("MyUser: ", myUser);
-    console.log("user: ", user);
 
 
     const handleLogin = (e) =>{
@@ -58,33 +52,51 @@
             //     alert(data.message);
             // }
         })
-
-
     }
 
+    const fetchMemes = (async  () => {
+        const response = await fetch('http://localhost:8000/api/memes');
+        return await response.json();
+    })();
 </script>
 
 {#if myUser}
 <h4> Bienvenido {myUser}</h4>
 {:else}
-<h4> Tendras que hacer login para acceder </h4>
-<form on:submit|preventDefault={handleLogin}>
-    <FormGroup>
-        <Label for="username">Username</Label>
-        <Input type="text" name="username" id="username" placeholder="Username" />
-    </FormGroup>
-    <FormGroup>
-        <Label for="password">Password</Label>
-        <Input type="password" name="password" id="password" placeholder="Password" />
-    </FormGroup>
-    <FormGroup>
-        <FormText color="muted">
-            <a href="#">Forgot Password?</a>
-        </FormText>
-    </FormGroup>
-    <FormGroup>
-        <Button color="primary">Login</Button>
-    </FormGroup>
-</form>
 
+<br/>
+<br/>
+<br/>
+
+<h5> Tendras que hacer login para acceder </h5>
 {/if}
+
+
+{#await fetchMemes}
+	<p>...waiting</p>
+{:then memes}
+    {#each memes.data as meme}
+        <!-- <div class="meme">
+            <h3>{meme.name}</h3>
+            <img src={meme.image} />
+            <span>{meme.author}</span>
+            <span>{meme.creation_date}</span>
+        </div> -->
+        <Figure caption={meme.name}>
+            <Image fluid alt={meme.name} src={meme.image} />
+        </Figure>
+    {/each}
+{:catch}
+    <p>...error</p>
+{/await}
+
+
+<style>
+    /* .meme{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    } */
+</style>

@@ -1,27 +1,29 @@
 <script>
 
+    import { user } from './userStore.js';
+
+    let myUser;
+
+    user.subscribe(function (newUser) {
+        myUser = newUser;
+    });
+
+
     // Obtener usuarios
-    const fetchUsers = (async () => {
-        const response = await fetch('http://localhost:8000/api/users');
+    const fetchUser = (async () => {
+        const response = await fetch(`http://localhost:8000/api/users/${myUser}`);
         return await response.json()
     })()
 </script>
 
 <p>Este es mi perfil</p>
 
-<!-- {users} -->
 
-{#await fetchUsers}
+{#await fetchUser}
 	<p>...waiting</p>
-{:then users}
-    <ul>
-        {#each users.data as user}
-            <li>
-                {user.email}
-        </li>  
-
-        {/each}
-    </ul>
+{:then user}
+    <p>{user.data.username}</p>
+    <p>{user.data.email}</p>
 {:catch error}
 	<p>An error occurred!</p>
 {/await}

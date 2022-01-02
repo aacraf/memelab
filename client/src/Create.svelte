@@ -3,8 +3,15 @@
     import { onMount } from 'svelte';
     import { Input, Button } from 'sveltestrap';
 
+    import { user } from './userStore.js';
+
+    let myUser;
     let canvas;
     var canv;
+
+    user.subscribe(function(user) {
+        myUser = user;
+    });
 
     // Creating canvas 
     onMount(() => {
@@ -38,6 +45,36 @@
         canv.add(text);
     }
 
+    // Saving Image
+    const saveImage = () => {
+        // canv.deactivateAll().renderAll();
+        var dataURL = canv.toDataURL({
+            format: 'png',
+            quality: 0.8
+        });
+    
+        let data = {}
+        data.image = dataURL;
+        data.author = myUser;
+        data.likes = 0;
+        data.width = canv.getWidth();
+        data.height = canv.getHeight();
+        data.name = "prueba"
+        data.creation_date = new Date();
+
+        console.log(data);
+
+        // document.getElementById("prueba").src = dataURL;        
+
+        fetch('http://localhost:8000/api/memes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+
     // Downloading an Image
     const downloadImage = () => {
         // canv.deactivateAll().renderAll();
@@ -56,6 +93,7 @@
         link.download = 'meme.png';
         link.click();
     }
+
 
     // paste and image
     function pasteImage(e) {
@@ -119,8 +157,13 @@
             width="10%"
         />
         <Button
+            on:click={saveImage}
+        >
+        Guardar
+        </Button>
+        <Button
             on:click={downloadImage}
-        >Guardar
+        >Descargar
         </Button>
         <Button
             on:click={addText}
@@ -128,4 +171,7 @@
         </Button>
 
     </div>
+
+    <img id="prueba"/>
+
 </div>

@@ -13,7 +13,7 @@ app.listen(HTTP_PORT, () => {
 });
 
 app.use(cors())
-app.use(express.json());
+app.use(express.json({ limit: '10MB' }));
 
 // Root endpoint
 app.get("/", (req, res, next) => {
@@ -27,9 +27,6 @@ app.get("/create", (req, res, next) => {
 })
 
 // Insert here other API endpoints
-
-
-
 app.get("/api/users", (req, res, next) => {
     var sql = "select * from user"
     var params = []
@@ -44,6 +41,24 @@ app.get("/api/users", (req, res, next) => {
         })
       });
 });
+
+// Get a user based on username (which is unique)
+app.get("/api/users/:id", (req, res, next) => {
+    var sql = "select * from user where username = ?"
+    var params = [req.params.id]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":row
+        })
+      });
+});
+
+
 
 
 app.post("/api/users", async (req, res, next) => {
@@ -169,6 +184,7 @@ app.post("/api/users/login", async (req, res, next) => {
 
 
 
+
 // get a specific user
 app.get("/api/users/:id", (req, res, next) => {
     var sql = "select * from user where id = ?"
@@ -185,8 +201,41 @@ app.get("/api/users/:id", (req, res, next) => {
     })
 });
 
+//get all memes
+app.get("/api/memes", (req, res, next) => {
+    var sql = "select * from meme order by creation_date desc"
+    var params = []
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":rows
+        })
+      });
+});
 
-
+// save a meme
+app.post("/api/memes", (req,res,next) => {
+    sql = "INSERT INTO meme (name, width, height, author, likes, image, creation_date) VALUES (?,?,?,?,?,?,?)"
+    params = [req.body.name, req.body.width, req.body.height, req.body.author, req.body.likes, req.body.image, req.body.creation_date]
+    db.run(sql, params, function(err, result) {
+        if (err) {
+            res.status(400).json({
+                "message": "Error in insert",
+                "error": err.message
+            })
+            return
+        }
+        res.json({
+            "message": "Meme inserted",
+            "data": req.body,
+            "id": this.lastID
+        })
+    })
+})
 
 
 app.get("/api/memelists", (req, res, next) => {

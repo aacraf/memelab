@@ -15,7 +15,7 @@
     } from 'sveltestrap';
     import App from './App.svelte';
     import {getContext} from 'svelte';
-    import {Link} from 'svelte-navigator';
+    import {Link, navigate} from 'svelte-navigator';
     let isOpen = false;
 
     import { user } from './userStore';
@@ -44,14 +44,17 @@
             <NavLink><Link to="/create">Create</Link></NavLink>
             </NavItem>
             <NavItem>
-                <NavLink><Link to="/profile">Profile</Link></NavLink>
+              <NavLink><Link to="/lists">My Lists</Link></NavLink>
             </NavItem>  
             <NavItem>
-                <NavLink><a href="#" on:click={(e)=>user.set('')}>LogOut</a></NavLink>
+                <NavLink><Link to="/profile">Profile</Link></NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink><a href="#" on:click={(e)=>{user.set(''); navigate('/')}}>LogOut</a></NavLink>
             </NavItem>
           {:else}
             <NavItem>
-                <NavLink><Link to="/login">Login</Link></NavLink>
+                <NavLink><Link to="/auth">Login</Link></NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="https://github.com/bestguy/sveltestrap">GitHub</NavLink>

@@ -3,6 +3,7 @@
 	import Navbar from './Navbar.svelte';
 	import Create from './Create.svelte';
 	import Home from './Home.svelte';
+	import Auth from './Auth.svelte';
 	import Profile from './Profile.svelte';
 	import { Router, Route, Link } from "svelte-navigator";
 	import {setContext} from 'svelte';
@@ -21,5 +22,6 @@
 		<Route path="/" component="{Home}" />
 		<Route path="/create" component="{Create}" />
 		<Route path="/profile" component="{Profile}" />
+		<Route path="/auth" component="{Auth}" />
 	</Router>
 </main>
