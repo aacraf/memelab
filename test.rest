@@ -16,3 +16,21 @@ Content-Type: application/json
     "username": "acraf",
     "password": "aaa"
 }
+
+
+### 
+
+GET http://localhost:8000/api/memelists?author=joan
+
+
+### 
+
+POST http://localhost:8000/api/memelists/8/get_meme
+Content-Type: application/json
+{
+    "meme_id": 8
+}
+
+### 
+
+GET http://localhost:8000/api/memelists/6/memes

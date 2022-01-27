@@ -13,7 +13,6 @@
       DropdownMenu,
       DropdownItem
     } from 'sveltestrap';
-    import App from './App.svelte';
     import {getContext} from 'svelte';
     import {Link, navigate} from 'svelte-navigator';
     let isOpen = false;
@@ -44,7 +43,7 @@
             <NavLink><Link to="/create">Create</Link></NavLink>
             </NavItem>
             <NavItem>
-              <NavLink><Link to="/lists">My Lists</Link></NavLink>
+              <NavLink><Link to="/memelists">Memelists</Link></NavLink>
             </NavItem>  
             <NavItem>
                 <NavLink><Link to="/profile">Profile</Link></NavLink>
@@ -72,3 +71,17 @@
       </Nav>
     </Collapse>
   </Navbar>
+
+
+  <style>
+    .link > :global(a) {
+        text-decoration: none;
+        color: #000;
+    }
+    :global(a){
+        color: #000 !important;
+        text-decoration: none !important;
+        font-weight: bold;
+    }
+
+  </style>

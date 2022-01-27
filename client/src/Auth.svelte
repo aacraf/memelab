@@ -26,12 +26,9 @@
             })
         }).then(res => res.json())
         .then(response => {
-            console.log(response);
-            console.log(response.message);
-            if (response.message == "Login success")
+            if (response.success)
             {
-                user.set(response.data.username);
-                alert(`Welcome ${response.data.username}`); 
+                user.set(response.message.username);
                 navigate('/', { replace: true });
             }
             else
@@ -63,8 +60,6 @@
             console.log(response.message);
             if (response.message == "User inserted")
             {
-                user.set(response.data.username);
-                alert(`Registered ${response.data.username}`);
                 registerView = false;
             }
             else

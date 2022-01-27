@@ -1,7 +1,7 @@
 <script>
     import { user } from './userStore.js'; 
-    import { Figure, Image  } from 'sveltestrap';
-
+    import Meme from './Meme.svelte';
+    import { Col, Container, Row } from 'sveltestrap';
     let myUser;
     
     user.subscribe(val => {
@@ -61,7 +61,7 @@
 </script>
 
 {#if myUser}
-<h4> Bienvenido {myUser}</h4>
+<!-- <h4> Bienvenido {myUser}</h4> -->
 {:else}
 
 <br/>
@@ -71,7 +71,7 @@
 <h5> Tendras que hacer login para acceder </h5>
 {/if}
 
-
+<Container>
 {#await fetchMemes}
 	<p>...waiting</p>
 {:then memes}
@@ -82,21 +82,16 @@
             <span>{meme.author}</span>
             <span>{meme.creation_date}</span>
         </div> -->
-        <Figure caption={meme.name}>
-            <Image fluid alt={meme.name} src={meme.image} />
-        </Figure>
+        <Row>
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <Meme meme={meme} />
+            </Col>
+        </Row>
     {/each}
 {:catch}
     <p>...error</p>
 {/await}
+</Container>
 
 
-<style>
-    /* .meme{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 10px;
-    } */
-</style>
+
