@@ -67,8 +67,9 @@ router.post("/", async (req, res, next) => {
 
     User.create(req.body.username, req.body.password, req.body.email)
     .then(user => {
+        console.log("User", user)
         res.status(201).send({
-            success: 'true',
+            success: true,
             message: user
         });
     })

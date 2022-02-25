@@ -29,6 +29,7 @@
             if (response.success)
             {
                 user.set(response.message.username);
+                alert(`Welcome ${response.message.username}`); 
                 navigate('/', { replace: true });
             }
             else
@@ -39,11 +40,8 @@
     }
 
     const handleRegister = (e) =>{
+        
         e.preventDefault();
-        // console.log("valeee");
-        // console.log(e.target.username.value);
-        // console.log(e.target.password.value);
-
         fetch('http://localhost:8000/api/users', {
             method: 'POST',
             headers: {
@@ -57,9 +55,10 @@
         }).then(res => res.json())
         .then(response => {
             console.log(response);
-            console.log(response.message);
-            if (response.message == "User inserted")
+            console.log(response.success);
+            if (response.success)
             {
+                user.set(e.target.username.value);
                 registerView = false;
             }
             else

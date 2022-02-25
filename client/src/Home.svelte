@@ -1,7 +1,7 @@
 <script>
     import { user } from './userStore.js'; 
     import Meme from './Meme.svelte';
-    import { Col, Container, Row } from 'sveltestrap';
+    import { Col, Container, Row, Alert} from 'sveltestrap';
     let myUser;
     
     user.subscribe(val => {
@@ -63,12 +63,11 @@
 {#if myUser}
 <!-- <h4> Bienvenido {myUser}</h4> -->
 {:else}
-
-<br/>
-<br/>
-<br/>
-
-<h5> Tendras que hacer login para acceder </h5>
+    <Alert dark>
+        <h4 class="alert-heading text-capitalize">Login to create Memes</h4>
+        Create your memes and save them!
+        .
+    </Alert>
 {/if}
 
 <Container>

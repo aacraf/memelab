@@ -56,7 +56,7 @@
                 <NavLink><Link to="/auth">Login</Link></NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/bestguy/sveltestrap">GitHub</NavLink>
+              <NavLink href="#">GitHub</NavLink>
             </NavItem>
           {/if}
         <!-- <Dropdown nav inNavbar>

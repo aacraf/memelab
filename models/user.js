@@ -60,9 +60,9 @@ exports.create = (username, password, email) => {
                 return;
             }
             else{
-                if(result){
-                    resolve(JSON.parse(JSON.stringify(result)));
-                }
+                
+                resolve(JSON.parse(JSON.stringify(true)));
+            
                 // create liked memelist for user
                 var sql = "INSERT INTO memelist (name, count, author) VALUES (?,?,?)";
                 var params = ["liked memes", 0, username];
