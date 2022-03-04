@@ -20,22 +20,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             PRAGMA foreign_keys = off;
             BEGIN TRANSACTION;
 
-            --
-            -- File generated with SQLiteStudio v3.2.1 on ju. ene. 27 07:21:26 2022
-            --
-            -- Text encoding used: System
-            --
-
-            -- Table: user
-            CREATE TABLE user (
-                id       INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT    UNIQUE,
-                email    TEXT    UNIQUE,
-                password TEXT,
-                CONSTRAINT email_unique UNIQUE (
-                    email
-                )
-            );
+         
                       
             )`,
         (err) => {
@@ -44,6 +29,24 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             }else{
             }
         });  
+
+        db.run(`
+        -- Table: user
+        CREATE TABLE user (
+            id       INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT    UNIQUE,
+            email    TEXT    UNIQUE,
+            password TEXT,
+            CONSTRAINT email_unique UNIQUE (
+                email
+            )
+        );
+        `, 
+        (err) => {
+            if (err) {
+                // Table already created
+            } 
+        });
 
         db.run(`
             -- Table: meme
@@ -63,6 +66,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 // Table already created
             } 
         });
+
+     
+
 
         db.run(`        
         -- Table: memelist
